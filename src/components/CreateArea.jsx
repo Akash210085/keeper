@@ -1,23 +1,41 @@
-import React from "react";
+import React, {useState} from "react";
+import AddIcon from "@mui/icons-material/Add";
+import Fab from "@mui/material/Fab";
+import Zoom from "@mui/material/Zoom";
+
 
 function CreateArea(props) {
+  
+const [expand, setExpand] = useState(false);
+
+  function expanText()
+  {
+    setExpand(true);
+  }
   return (
     <div>
-      <form>
-        <input
+      <form className="create-note" >
+      {expand && <input
           onChange={props.onChanged}
           name="title"
           placeholder="Title"
           value={props.titleValue}
-        />
+        /> }
+        
         <textarea
+        onClick={expanText}
           onChange={props.onChanged}
           name="content"
           placeholder="Take a note..."
-          rows="3"
+          rows={expand?3:1}
           value={props.contentValue}
         />
-        <button onClick={props.onClicked}>Add</button>
+        <Zoom in={expand}>
+          <Fab onClick={props.onClicked}>
+            {" "}
+            <AddIcon />{" "}
+          </Fab>
+        </Zoom>
       </form>
     </div>
   );
