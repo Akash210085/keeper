@@ -12,10 +12,12 @@ function App() {
     content: "",
   });
 
-  const [temp, setTemp] = useState({
-    title: "",
-    content: "",
-  });
+  const [list, setList] = useState([]);
+
+  // const [temp, setTemp] = useState({
+  //   title: "",
+  //   content: "",
+  // });
 
   function handleChange(event) {
     // const newInput = event.target.value;
@@ -33,17 +35,24 @@ function App() {
         return { title: preValue.title, content: value };
       }
     });
-    // setInput((preValue) => {
-    //   return {
-    //     ...preValue,
-    //   };
-    // });
+    
   }
 
   function handleClick(event) {
     event.preventDefault();
-    setTemp(input);
+    // setTemp(input);
+    setList((preValue) => {
+      return [...preValue, input];
+    });
     setInput({ title: "", content: "" });
+  }
+
+  function deleteItem(id) {
+    setList((preValue) => {
+      return preValue.filter((item, index) => {
+        return id !== index;
+      });
+    });
   }
   return (
     <div>
@@ -54,7 +63,18 @@ function App() {
         titleValue={input.title}
         contentValue={input.content}
       />
-      <Note key={1} title={temp.title} content={temp.content} />
+      {list.map((item, index) => {
+        return (
+          <Note
+            key={index}
+            id={index}
+            title={item.title}
+            content={item.content}
+            deleteItem={deleteItem}
+          />
+        );
+      })}
+      {/* <Note key={1} title={temp.title} content={temp.content} /> */}
       <Footer />
     </div>
   );
